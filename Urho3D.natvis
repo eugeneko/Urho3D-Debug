@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <!-- Urho3D::PODVector<> -->
+  <Type Name = "Urho3D::PODVector&lt;*&gt;">
+    <DisplayString>{{ size={size_} [POD] }}</DisplayString>
+    <Expand>
+      <Item Name="[size]" ExcludeView="simple">size_</Item>
+      <Item Name="[capacity]" ExcludeView="simple">capacity_</Item>
+      <ArrayItems>
+        <Size>size_</Size>
+        <ValuePointer>($T1*)buffer_</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::Vector<> -->
+  <Type Name = "Urho3D::Vector&lt;*&gt;">
+    <DisplayString>{{ size={size_} }}</DisplayString>
+    <Expand>
+      <Item Name="[size]" ExcludeView="simple">size_</Item>
+      <Item Name="[capacity]" ExcludeView="simple">capacity_</Item>
+      <ArrayItems>
+        <Size>size_</Size>
+        <ValuePointer>($T1*)buffer_</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::List<> -->
+  <Type Name="Urho3D::List&lt;*&gt;">
+    <DisplayString>{{ size={size_} }}</DisplayString>
+    <Expand>
+      <Item Name="[size]" ExcludeView="simple">size_</Item>
+      <LinkedListItems>
+        <Size>size_</Size>
+        <HeadPointer>head_</HeadPointer>
+        <NextPointer>next_</NextPointer>
+        <ValueNode>(*(List&lt;$T1&gt;::Node*)this).value_</ValueNode>
+      </LinkedListItems>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::RandomAccessIterator<> -->
+  <!-- Urho3D::RandomAccessConstIterator<> -->
+  <Type Name = "Urho3D::RandomAccessIterator&lt;*&gt;">
+    <AlternativeType Name="Urho3D::RandomAccessConstIterator&lt;*&gt;"/>
+    <SmartPointer Usage="Indexable">ptr_,na</SmartPointer>
+    <Expand>
+      <Item Name="[ptr]">ptr_</Item>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::HashMap<> -->
+  <Type Name="Urho3D::HashMap&lt;*,*&gt;">
+    <DisplayString>{{ size={ptrs_ ? (unsigned)(ptrs_[0]) : 0} }}</DisplayString>
+    <Expand>
+      <Item Name="[size]" ExcludeView="simple">ptrs_ ? (unsigned)(ptrs_[0]) : 0</Item>
+      <Item Name="[bucket_count]" ExcludeView="simple">ptrs_ ? (unsigned)(ptrs_[1]) : 0</Item>
+      <Item Name="[allocator]" ExcludeView="simple">allocator_</Item>
+      <CustomListItems MaxItemsPerView="5000" ExcludeView="Test">
+        <Variable Name="pBucket" InitialValue="head_" />
+
+        <Loop>
+          <Break Condition="pBucket == tail_" />
+          <Item Name="{(*(Urho3D::HashMap&lt;$T1,$T2&gt;::Node*)pBucket).pair_.first_}">
+            (*(Urho3D::HashMap&lt;$T1,$T2&gt;::Node*)pBucket).pair_
+          </Item>
+          <Exec>pBucket = pBucket->next_</Exec>
+        </Loop>
+      </CustomListItems>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::HashMap<>::Iterator -->
+  <Type Name="Urho3D::HashMap&lt;*,*&gt;::Iterator">
+    <AlternativeType Name="Urho3D::HashMap&lt;*,*&gt;::ConstIterator"/>
+    <DisplayString>{((Urho3D::HashMap&lt;$T1,$T2&gt;::Node*)(ptr_))->pair_}</DisplayString>
+    <Expand>
+      <ExpandedItem>((Urho3D::HashMap&lt;$T1,$T2&gt;::Node*)(ptr_))->pair_</ExpandedItem>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::HashMap<>::KeyValue -->
+  <Type Name="Urho3D::HashMap&lt;*,*&gt;::KeyValue">
+    <DisplayString>{second_}</DisplayString>
+    <Expand>
+      <Item Name="[key]">first_</Item>
+      <Item Name="[value]">second_</Item>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::HashSet<> -->
+  <Type Name="Urho3D::HashSet&lt;*&gt;">
+    <DisplayString>{{ size={ptrs_ ? (unsigned)(ptrs_[0]) : 0} }}</DisplayString>
+    <Expand>
+      <Item Name="[size]" ExcludeView="simple">ptrs_ ? (unsigned)(ptrs_[0]) : 0</Item>
+      <Item Name="[bucket_count]" ExcludeView="simple">ptrs_ ? (unsigned)(ptrs_[1]) : 0</Item>
+      <Item Name="[allocator]" ExcludeView="simple">allocator_</Item>
+      <CustomListItems MaxItemsPerView="5000" ExcludeView="Test">
+        <Variable Name="pBucket" InitialValue="head_"/>
+        <Variable Name="iIndex" InitialValue="0"/>
+
+        <Loop>
+          <Break Condition="pBucket == tail_" />
+          <Item Name="{iIndex}">
+            (*(Urho3D::HashSet&lt;$T1&gt;::Node*)pBucket).key_
+          </Item>
+          <Exec>pBucket = pBucket->next_</Exec>
+          <Exec>iIndex = iIndex + 1</Exec>
+        </Loop>
+      </CustomListItems>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::String -->
+  <Type Name="Urho3D::String">
+    <DisplayString Condition="buffer_">{buffer_,na}</DisplayString>
+    <DisplayString>invalid string</DisplayString>
+  </Type>
+
+  <!-- Urho3D::StringHash -->
+  <Type Name="Urho3D::StringHash">
+    <DisplayString>#{value_}</DisplayString>
+  </Type>
+
+  <!-- Urho3D::Variant -->
+  <Type Name="Urho3D::Variant">
+    <DisplayString Condition="type_==Urho3D::VAR_NONE">(none)</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_INT">(int) {value_.int_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_BOOL">(bool) {value_.bool_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_FLOAT">(float) {value_.float_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_DOUBLE">(double) {*(double*)&amp;value_.float_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_STRING">(string) {*(Urho3D::String*)&amp;value_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VECTOR2">(vec2) {*(Urho3D::Vector2*)&amp;value_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VECTOR3">(vec3) {*(Urho3D::Vector3*)&amp;value_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VECTOR4">(vec4) {*(Urho3D::Vector4*)&amp;value_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_QUATERNION">(quat) {*(Urho3D::Quaternion*)&amp;value_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VOIDPTR">(void*) {value_.ptr_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_PTR">(ref) {*((Urho3D::WeakPtr&lt;Urho3D::RefCounted&gt;*)(&amp;value_))}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_RESOURCEREF">(resref) {*((Urho3D::ResourceRef*)(&amp;value_))}</DisplayString>
+  </Type>
+
+</AutoVisualizer>
