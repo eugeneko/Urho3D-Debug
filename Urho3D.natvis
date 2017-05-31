@@ -114,7 +114,7 @@
 
   <!-- Urho3D::String -->
   <Type Name="Urho3D::String">
-    <DisplayString Condition="buffer_">{buffer_,na}</DisplayString>
+    <DisplayString Condition="buffer_">{buffer_,nas8}</DisplayString>
     <DisplayString>invalid string</DisplayString>
   </Type>
 
