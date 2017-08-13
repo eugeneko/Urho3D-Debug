@@ -116,6 +116,14 @@
   <Type Name="Urho3D::String">
     <DisplayString Condition="buffer_">{buffer_,nas8}</DisplayString>
     <DisplayString>invalid string</DisplayString>
+    <Expand>
+      <Item Name="[length]" ExcludeView="simple">length_</Item>
+      <Item Name="[capacity]" ExcludeView="simple">capacity_</Item>
+      <ArrayItems>
+        <Size>length_</Size>
+        <ValuePointer>buffer_</ValuePointer>
+      </ArrayItems>
+    </Expand>
   </Type>
 
   <!-- Urho3D::StringHash -->
@@ -129,15 +137,96 @@
     <DisplayString Condition="type_==Urho3D::VAR_INT">(int) {value_.int_}</DisplayString>
     <DisplayString Condition="type_==Urho3D::VAR_BOOL">(bool) {value_.bool_}</DisplayString>
     <DisplayString Condition="type_==Urho3D::VAR_FLOAT">(float) {value_.float_}</DisplayString>
-    <DisplayString Condition="type_==Urho3D::VAR_DOUBLE">(double) {*(double*)&amp;value_.float_}</DisplayString>
-    <DisplayString Condition="type_==Urho3D::VAR_STRING">(string) {*(Urho3D::String*)&amp;value_}</DisplayString>
-    <DisplayString Condition="type_==Urho3D::VAR_VECTOR2">(vec2) {*(Urho3D::Vector2*)&amp;value_}</DisplayString>
-    <DisplayString Condition="type_==Urho3D::VAR_VECTOR3">(vec3) {*(Urho3D::Vector3*)&amp;value_}</DisplayString>
-    <DisplayString Condition="type_==Urho3D::VAR_VECTOR4">(vec4) {*(Urho3D::Vector4*)&amp;value_}</DisplayString>
-    <DisplayString Condition="type_==Urho3D::VAR_QUATERNION">(quat) {*(Urho3D::Quaternion*)&amp;value_}</DisplayString>
-    <DisplayString Condition="type_==Urho3D::VAR_VOIDPTR">(void*) {value_.ptr_}</DisplayString>
-    <DisplayString Condition="type_==Urho3D::VAR_PTR">(ref) {*((Urho3D::WeakPtr&lt;Urho3D::RefCounted&gt;*)(&amp;value_))}</DisplayString>
-    <DisplayString Condition="type_==Urho3D::VAR_RESOURCEREF">(resref) {*((Urho3D::ResourceRef*)(&amp;value_))}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VECTOR2">(vec2) {value_.vector2_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VECTOR3">(vec3) {value_.vector3_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VECTOR4">(vec4) {value_.vector4_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_QUATERNION">(quat) {value_.quaternion_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_COLOR">(color) {value_.color_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_DOUBLE">(double) {value_.double_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_STRING">(string) {value_.string_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_BUFFER">(string) {value_.buffer_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VOIDPTR">(void*) {value_.voidPtr_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_RESOURCEREF">(resref) {value_.resourceRef_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_RESOURCEREFLIST">(resref) {value_.resourceRefList_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VARIANTVECTOR">(vector) {value_.variantVector_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_VARIANTMAP">(map) {value_.variantMap_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_INTRECT">(irect) {value_.intRect_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_INTVECTOR2">(ivec2) {value_.intVector2_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_PTR">(pointer) {value_.weakPtr_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_MATRIX3">(mat3) {*value_.matrix3_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_MATRIX3X4">(mat3x4) {*value_.matrix3x4_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_MATRIX4">(mat4) {*value_.matrix4_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_DOUBLE">(double) {value_.double_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_STRINGVECTOR">(string[]) {value_.stringVector_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_RECT">(rect) {value_.rect_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_INTVECTOR3">(ivec3) {value_.intVector3_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_INT64">(int64) {value_.int64_}</DisplayString>
+    <!-- Add new types here -->
+    <DisplayString Condition="type_==Urho3D::VAR_CUSTOM_HEAP">(custom*) {*value_.customValueHeap_}</DisplayString>
+    <DisplayString Condition="type_==Urho3D::VAR_CUSTOM_STACK">(custom) {value_.customValueStack_}</DisplayString>
+    <Expand>
+      <Item Name="[value]" Condition="type_==Urho3D::VAR_INT">value_.int_</Item>
+      <Item Name="[value]" Condition="type_==Urho3D::VAR_BOOL">value_.bool_</Item>
+      <Item Name="[value]" Condition="type_==Urho3D::VAR_FLOAT">value_.float_</Item>
+      <ExpandedItem Condition="type_==Urho3D::VAR_VECTOR2">value_.vector2_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_VECTOR3">value_.vector3_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_VECTOR4">value_.vector4_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_QUATERNION">value_.quaternion_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_COLOR">value_.color_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_STRING">value_.string_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_BUFFER">value_.buffer_</ExpandedItem>
+      <Item Name="[value]" Condition="type_==Urho3D::VAR_VOIDPTR">value_.voidPtr_</Item>
+      <ExpandedItem Condition="type_==Urho3D::VAR_RESOURCEREF">value_.resourceRef_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_RESOURCEREFLIST">value_.resourceRefList_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_VARIANTVECTOR">value_.variantVector_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_VARIANTMAP">value_.variantMap_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_INTRECT">value_.intRect_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_INTVECTOR2">value_.intVector2_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_PTR">value_.weakPtr_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_MATRIX3">*value_.matrix3_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_MATRIX3X4">*value_.matrix3x4_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_MATRIX4">*value_.matrix4_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_DOUBLE">value_.double_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_STRINGVECTOR">value_.stringVector_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_RECT">value_.rect_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_INTVECTOR3">value_.intVector3_</ExpandedItem>
+      <Item Name="[value]" Condition="type_==Urho3D::VAR_INT64">value_.int64_</Item>
+      <!-- Add new types here -->
+      <ExpandedItem Condition="type_==Urho3D::VAR_CUSTOM_HEAP">*value_.customValueHeap_</ExpandedItem>
+      <ExpandedItem Condition="type_==Urho3D::VAR_CUSTOM_STACK">value_.customValueStack_</ExpandedItem>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::CustomVariantValueImpl<> -->
+  <Type Name = "Urho3D::CustomVariantValueImpl&lt;*&gt;">
+    <DisplayString>{ value_ }</DisplayString>
+    <Expand>
+      <ExpandedItem>value_</ExpandedItem>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::SharedPtr<> -->
+  <Type Name = "Urho3D::SharedPtr&lt;*&gt;">
+    <DisplayString>{ptr_}</DisplayString>
+    <Expand>
+      <Synthetic Condition="!ptr_" Name="[empty]"/>
+      <Item Condition="ptr_" Name="[strong]">ptr_->refCount_->refs_</Item>
+      <Item Condition="ptr_" Name="[weak]">ptr_->refCount_->weakRefs_</Item>
+      <Item Condition="ptr_" Name="[ptr]">ptr_</Item>
+    </Expand>
+  </Type>
+
+  <!-- Urho3D::WeakPtr<> -->
+  <Type Name = "Urho3D::WeakPtr&lt;*&gt;">
+    <DisplayString Condition="!refCount_ || refCount_->refs_ &lt; 0">(expired)</DisplayString>
+    <DisplayString Condition="!(!refCount_ || refCount_->refs_ &lt; 0)">{ptr_}</DisplayString>
+    <Expand>
+      <Synthetic Condition="!refCount_ || refCount_->refs_ &lt; 0" Name="[expired]"/>
+      <Item Condition="!refCount_ || refCount_->refs_ &lt; 0" Name="[weak]">refCount_->weakRefs_</Item>
+      <Item Condition="!(!refCount_ || refCount_->refs_ &lt; 0)" Name="[strong]">ptr_->refCount_->refs_</Item>
+      <Item Condition="!(!refCount_ || refCount_->refs_ &lt; 0)" Name="[weak]">ptr_->refCount_->weakRefs_</Item>
+      <Item Condition="!(!refCount_ || refCount_->refs_ &lt; 0)" Name="[ptr]">ptr_</Item>
+    </Expand>
   </Type>
 
 </AutoVisualizer>
