@@ -119,10 +119,7 @@
     <Expand>
       <Item Name="[length]" ExcludeView="simple">length_</Item>
       <Item Name="[capacity]" ExcludeView="simple">capacity_</Item>
-      <ArrayItems>
-        <Size>length_</Size>
-        <ValuePointer>buffer_</ValuePointer>
-      </ArrayItems>
+      <Item Name="[buffer]">buffer_</Item>
     </Expand>
   </Type>
 
@@ -218,14 +215,15 @@
 
   <!-- Urho3D::WeakPtr<> -->
   <Type Name = "Urho3D::WeakPtr&lt;*&gt;">
-    <DisplayString Condition="!refCount_ || refCount_->refs_ &lt; 0">(expired)</DisplayString>
-    <DisplayString Condition="!(!refCount_ || refCount_->refs_ &lt; 0)">{ptr_}</DisplayString>
+    <DisplayString Condition="!refCount_">(empty)</DisplayString>
+    <DisplayString Condition="refCount_ &amp;&amp; (refCount_->refs_ &lt; 0)">(expired)</DisplayString>
+    <DisplayString Condition="refCount_ &amp;&amp; !(refCount_->refs_ &lt; 0)">{ptr_}</DisplayString>
     <Expand>
-      <Synthetic Condition="!refCount_ || refCount_->refs_ &lt; 0" Name="[expired]"/>
-      <Item Condition="!refCount_ || refCount_->refs_ &lt; 0" Name="[weak]">refCount_->weakRefs_</Item>
-      <Item Condition="!(!refCount_ || refCount_->refs_ &lt; 0)" Name="[strong]">ptr_->refCount_->refs_</Item>
-      <Item Condition="!(!refCount_ || refCount_->refs_ &lt; 0)" Name="[weak]">ptr_->refCount_->weakRefs_</Item>
-      <Item Condition="!(!refCount_ || refCount_->refs_ &lt; 0)" Name="[ptr]">ptr_</Item>
+      <Synthetic Condition="!refCount_" Name="[empty]"/>
+      <Synthetic Condition="refCount_ &amp;&amp; refCount_->refs_ &lt; 0" Name="[expired]"/>
+      <Item Condition="refCount_" Name="[weak]">refCount_->weakRefs_</Item>
+      <Item Condition="refCount_" Name="[strong]">ptr_->refCount_->refs_</Item>
+      <Item Condition="refCount_ &amp;&amp; !(refCount_->refs_ &lt; 0)" Name="[ptr]">ptr_</Item>
     </Expand>
   </Type>
 
