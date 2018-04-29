@@ -57,7 +57,7 @@
       <Item Name="[size]" ExcludeView="simple">ptrs_ ? (unsigned)(ptrs_[0]) : 0</Item>
       <Item Name="[bucket_count]" ExcludeView="simple">ptrs_ ? (unsigned)(ptrs_[1]) : 0</Item>
       <Item Name="[allocator]" ExcludeView="simple">allocator_</Item>
-      <CustomListItems MaxItemsPerView="5000" ExcludeView="Test">
+      <CustomListItems MaxItemsPerView="5000">
         <Variable Name="pBucket" InitialValue="head_" />
 
         <Loop>
@@ -124,8 +124,37 @@
   </Type>
 
   <!-- Urho3D::StringHash -->
-  <Type Name="Urho3D::StringHash">
+  <Type Name="Urho3D::StringHash" Priority="Low">
     <DisplayString>#{value_}</DisplayString>
+  </Type>
+
+  <!-- Urho3D::StringHash with hash reversing -->
+  <Type Name="Urho3D::StringHash">
+    <DisplayString Condition="!Urho3D::hashReverseMap">#{value_}</DisplayString>
+    <Expand>
+      <CustomListItems MaxItemsPerView="1" Condition="Urho3D::hashReverseMap">
+        <Variable Name="pPtrs" InitialValue="Urho3D::hashReverseMap->ptrs_"/>
+        <Variable Name="pNode" InitialValue="(Urho3D::HashMap&lt;Urho3D::StringHash,Urho3D::String&gt;::Node*)0"/>
+        <Variable Name="nBuckets" InitialValue="0"/>
+        <Variable Name="nHash" InitialValue="0"/>
+
+        <If Condition="pPtrs">
+          <Exec>nBuckets = (unsigned)pPtrs[1]</Exec>
+          <Exec>nHash = value_ &amp; (nBuckets - 1)</Exec>
+          <Exec>pNode = (Urho3D::HashMap&lt;Urho3D::StringHash,Urho3D::String&gt;::Node*)pPtrs[nHash + 2]</Exec>
+          <Loop Condition="pNode">
+            <If Condition="(*(Urho3D::HashMap&lt;Urho3D::StringHash,Urho3D::String&gt;::Node*)pNode).pair_.first_.value_ == value_">
+              <Item Name="[string]">(*(Urho3D::HashMap&lt;Urho3D::StringHash,Urho3D::String&gt;::Node*)pNode).pair_.second_</Item>
+              <Break/>
+            </If>
+            <Exec>pNode = (Urho3D::HashMap&lt;Urho3D::StringHash,Urho3D::String&gt;::Node*)(*pNode).down_</Exec>
+          </Loop>
+        </If>
+        <If Condition="!pNode">
+          <Item Name="[value]">value_</Item>
+        </If>
+      </CustomListItems>
+    </Expand>
   </Type>
 
   <!-- Urho3D::Variant -->
