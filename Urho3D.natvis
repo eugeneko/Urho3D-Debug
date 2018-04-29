@@ -222,9 +222,19 @@
       <Synthetic Condition="!refCount_" Name="[empty]"/>
       <Synthetic Condition="refCount_ &amp;&amp; refCount_->refs_ &lt; 0" Name="[expired]"/>
       <Item Condition="refCount_" Name="[weak]">refCount_->weakRefs_</Item>
-      <Item Condition="refCount_" Name="[strong]">ptr_->refCount_->refs_</Item>
+      <Item Condition="refCount_" Name="[strong]">refCount_->refs_</Item>
       <Item Condition="refCount_ &amp;&amp; !(refCount_->refs_ &lt; 0)" Name="[ptr]">ptr_</Item>
     </Expand>
+  </Type>
+
+  <!-- Urho3D::Node -->
+  <Type Name = "Urho3D::Node">
+    <DisplayString>name_ = {impl_.ptr_->name_}</DisplayString>
+  </Type>
+
+  <!-- Urho3D::Resource -->
+  <Type Name = "Urho3D::Resource">
+    <DisplayString>name_ = {name_}</DisplayString>
   </Type>
 
 </AutoVisualizer>
